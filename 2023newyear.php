@@ -3,7 +3,8 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>️</title>
+		<title>欢迎来到 CVEET 主页</title>
+        	<link rel="shortcut icon" href="https://g.deev.is/favicon.ico" />
 
 		<script>
 			//判断客户端设备，选择写入meta
