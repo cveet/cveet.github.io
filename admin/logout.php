@@ -1,0 +1,3 @@
+<?php
+/* 作者QQ：2769544753，倒卖全家死光光，出门撞大运 */
+ goto XXM02tLTpb; NeSvrGPlyx: $token = $_POST["\143\163\162\x66\137\164\157\153\145\156"] ?? ''; if (!(is_logged_in() && verify_csrf($token))) { goto Lbbn1389wS; } logout(); Lbbn1389wS: header("\x4c\157\143\x61\164\151\x6f\156\x3a\40\x69\156\144\145\170\x2e\x70\x68\x70"); goto gzMwPoVRL_; XXM02tLTpb: require_once __DIR__ . "\x2f\141\165\x74\x68\56\160\150\x70"; if (!($_SERVER["\122\105\121\x55\x45\123\x54\x5f\x4d\105\124\x48\117\104"] !== "\x50\117\123\124")) { goto G3aOHTMHyU; } header("\x4c\157\x63\x61\164\x69\x6f\x6e\72\40\x69\156\144\x65\170\x2e\x70\150\x70"); exit; G3aOHTMHyU: goto NeSvrGPlyx; gzMwPoVRL_: exit;
