@@ -1,4 +1,4 @@
-<!--感谢千问Ai--Qwen3.7-Max帮我修改该网页-->
+    <!--感谢千问Ai--Qwen3.7-Max帮我修改该网页-->
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -314,6 +314,26 @@
             .hero-info h1 { font-size: 1.6rem; }
             .gallery-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
             .gallery-item { aspect-ratio: 1; }
+            /* 抽屉面板：去掉 backdrop-filter 依赖，纯实色保底 */
+            .nav-links {
+            background: #0a0a0f !important;
+            -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+            }        
+
+            /* 让每个导航链接都有可见背景 */
+            .nav-links a {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            color: var(--text);
+            }
+
+            /* 当前激活页高亮 */
+            .nav-links a.active {
+            background: linear-gradient(135deg, #a78bfa, #f472b6);
+            color: #fff;
+            }
+
         }
     </style>
 </head>
