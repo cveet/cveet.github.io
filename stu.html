@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cveet 的反极域课堂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0a0a0f;
+            --bg-card: rgba(255,255,255,0.04);
+            --bg-glass: rgba(255,255,255,0.06);
+            --border-glass: rgba(255,255,255,0.1);
+            --text: #e8e8ed;
+            --text-muted: #8a8a9a;
+            --accent: #a78bfa;
+            --accent2: #f472b6;
+            --gradient: linear-gradient(135deg, #a78bfa, #f472b6, #fb923c);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.3s cubic-bezier(.4,0,.2,1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', 'Noto Serif SC', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-gradient {
+            position: fixed; inset: 0; z-index: -1; overflow: hidden;
+        }
+        .bg-gradient .orb {
+            position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        .bg-gradient .orb:nth-child(1) {
+            width: 600px; height: 600px; background: #a78bfa; top: -10%; left: -10%;
+        }
+        .bg-gradient .orb:nth-child(2) {
+            width: 500px; height: 500px; background: #f472b6; bottom: -10%; right: -5%;
+            animation-delay: -7s;
+        }
+        .bg-gradient .orb:nth-child(3) {
+            width: 400px; height: 400px; background: #34d399; top: 40%; left: 50%;
+            animation-delay: -14s;
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(80px, -60px) scale(1.1); }
+            50% { transform: translate(-40px, 80px) scale(0.9); }
+            75% { transform: translate(60px, 40px) scale(1.05); }
+        }
+
+        .bg-gradient::after {
+            content: ''; position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            opacity: 0.5; pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 16px 40px;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(10,10,15,0.6);
+            border-bottom: 1px solid var(--border-glass);
+            transition: var(--transition);
+        }
+        nav.scrolled { background: rgba(10,10,15,0.85); }
+
+        .nav-logo {
+            font-size: 1.3rem; font-weight: 700; letter-spacing: -0.5px;
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .nav-links { display: flex; gap: 8px; list-style: none; }
+        .nav-links a {
+            color: var(--text-muted); text-decoration: none; font-size: 0.9rem;
+            padding: 8px 16px; border-radius: 8px; transition: var(--transition);
+            font-weight: 500;
+        }
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text); background: var(--bg-glass);
+        }
+
+        .nav-toggle { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 8px; }
+        .nav-toggle svg { width: 24px; height: 24px; }
+
+        /* Hero */
+        .hero {
+            min-height: 50vh; padding: 140px 40px 60px;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .hero h1 {
+            font-family: 'Noto Serif SC', serif; font-size: 2.6rem; font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .hero h1 .highlight {
+            background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* Content */
+        .container { max-width: 900px; width: 100%; margin: 0 auto; padding: 0 40px 80px; }
+
+        .notice {
+            background: var(--bg-card); border: 1px solid var(--border-glass);
+            border-radius: var(--radius); padding: 24px 32px; margin-bottom: 40px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
+        .notice p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 6px; }
+        .notice .code { color: var(--accent); font-family: 'Courier New', monospace; font-weight: 600; }
+
+        /* Section Title */
+        .section-label {
+            font-size: 1.1rem; font-weight: 600; color: var(--text);
+            margin-bottom: 20px; padding-left: 14px;
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Tool Cards */
+        .card-grid {
+            display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px;
+        }
+
+        .tool-card {
+            background: var(--bg-card); border: 1px solid var(--border-glass);
+            border-radius: var(--radius); padding: 28px 32px;
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition);
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+        }
+        .tool-card:hover {
+            border-color: rgba(167,139,250,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(167,139,250,0.1);
+        }
+
+        .tool-info { flex: 1; min-width: 0; }
+        .tool-name {
+            font-size: 1.05rem; font-weight: 600; color: var(--text);
+            margin-bottom: 4px;
+        }
+        .tool-desc { font-size: 0.88rem; color: var(--text-muted); }
+
+        .tool-btn {
+            flex-shrink: 0;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 22px; border-radius: 10px;
+            background: var(--gradient); color: #fff;
+            font-size: 0.88rem; font-weight: 600;
+            text-decoration: none; transition: var(--transition);
+            white-space: nowrap;
+        }
+        .tool-btn:hover { opacity: 0.85; transform: scale(1.03); }
+        .tool-btn svg { width: 16px; height: 16px; }
+
+        /* Command Block */
+        .cmd-block {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm); padding: 20px 24px;
+            margin-bottom: 16px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.88rem; color: #a5d6a7; line-height: 1.9;
+            overflow-x: auto; position: relative;
+        }
+        .cmd-block .comment { color: var(--text-muted); }
+        .cmd-block .highlight-cmd { color: var(--accent); }
+
+        .cmd-label {
+            font-size: 0.95rem; font-weight: 600; color: var(--text);
+            margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+        }
+        .cmd-label .dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--accent3, #34d399);
+        }
+
+        .cmd-section { margin-bottom: 40px; }
+
+        /* Registry Block */
+        .reg-block {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass);
+            border-radius: var(--radius-sm); padding: 20px 24px;
+            margin: 12px 0 16px; font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.85rem; color: #ffcc80; line-height: 1.8;
+            overflow-x: auto; white-space: pre-wrap; word-break: break-all;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center; padding: 40px; color: var(--text-muted);
+            font-size: 0.85rem; border-top: 1px solid var(--border-glass);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2rem; }
+            .container { padding: 0 20px 60px; }
+            nav { padding: 14px 20px; }
+            .hero { padding: 120px 20px 40px; }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                position: fixed; top: 0; right: 0; bottom: 0; width: 260px;
+                flex-direction: column; padding: 80px 24px 40px;
+                background: #0a0a0f;
+                backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+                transform: translateX(100%); transition: transform 0.3s ease;
+                border-left: 1px solid var(--border-glass);
+            }
+            .nav-links.open { transform: translateX(0); }
+            .nav-links a { font-size: 1rem; padding: 12px 16px; background: rgba(255,255,255,0.06); border-radius: 10px; color: var(--text); }
+            .nav-links a.active { background: linear-gradient(135deg, #a78bfa, #f472b6); color: #fff; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 1.5rem; }
+            .tool-card { flex-direction: column; align-items: flex-start; }
+            .tool-btn { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-gradient">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+</div>
+
+<nav id="navbar">
+    <a href="/" class="nav-logo">CVEET</a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="/">Home</a></li>
+        <li><a href="/stu.html" class="active">Storeroom</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+    <div>
+        <h1>反极域<span class="highlight">课堂</span>工具箱</h1>
+        <p>极域电子课堂反控方法与工具整理</p>
+    </div>
+</div>
+
+<!-- Content -->
+<div class="container">
+
+    <!-- Notice -->
+    <div class="notice">
+        <p>提取码均为：<span class="code">fuyin</span></p>
+    </div>
+
+    <!-- Download Tools -->
+    <div class="section-label">工具下载</div>
+    <div class="card-grid">
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">Release 局域网聊天室</div>
+                <div class="tool-desc">局域网内消息互通工具</div>
+            </div>
+            <a href="https://wws.lanzouv.com/iIh9B0db3ymj" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">Unmythware 极域反控工具</div>
+                <div class="tool-desc">极域电子教室反控综合工具</div>
+            </div>
+            <a href="https://www.lanzoui.com/b00zd9syf" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">2020 极域电子教室破解程序</div>
+                <div class="tool-desc">最新版本极域破解</div>
+            </div>
+            <a href="https://wwl.lanzouv.com/iWbxW0gfm8yb" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">去除控制 v7.9.0</div>
+                <div class="tool-desc">解除极域屏幕控制</div>
+            </div>
+            <a href="https://wws.lanzouv.com/iG3vf0cc905e" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">UdpMythware.zip</div>
+                <div class="tool-desc">UDP 协议极域干扰工具</div>
+            </div>
+            <a href="https://wwp.lanzouy.com/itd5H0crinne" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+        <div class="tool-card">
+            <div class="tool-info">
+                <div class="tool-name">Program Killer 3.2</div>
+                <div class="tool-desc">进程强制终止工具</div>
+            </div>
+            <a href="https://wws.lanzouv.com/i28LE0cempmb" target="_blank" class="tool-btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                下载
+            </a>
+        </div>
+    </div>
+
+    <!-- Command Methods -->
+    <div class="section-label">命令行方法</div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>万能密码</div>
+        <div class="cmd-block">mythware_super_password</div>
+    </div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>终止极域主程序</div>
+        <div class="cmd-block"><span class="comment"># Win + R → 以管理员运行 CMD</span>
+taskkill /f /im StudentMain.exe</div>
+    </div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>重启资源管理器</div>
+        <div class="cmd-block">taskkill /f /im explorer /t</div>
+    </div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>局域网消息轰炸</div>
+        <div class="cmd-block"><span class="comment"># Win + R → CMD</span>
+msg /server:<span class="highlight-cmd">（目标电脑的计算机名或内网IP）</span> *
+<span class="comment"># 输入内容后 Ctrl + Z 回车发送</span></div>
+    </div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>解除断网限制</div>
+        <div class="cmd-block">taskkill /f /im GATESRV.exe
+taskkill /f /im MasterHelper.exe
+sc stop TDNetFilter</div>
+    </div>
+
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>蓝屏 Taskkill（慎用）</div>
+        <div class="cmd-block">taskkill -f -fi "pid ge 0"</div>
+    </div>
+
+    <!-- Registry -->
+    <div class="section-label">注册表劫持</div>
+    <div class="cmd-section">
+        <div class="cmd-label"><span class="dot"></span>注册表劫持极域进程</div>
+        <div class="cmd-block"><span class="comment"># 运行 regedit 打开注册表编辑器，定位到：</span></div>
+        <div class="reg-block">[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\StudentMain.exe]
+"debugger"="cmd.exe"</div>
+        <div class="cmd-block"><span class="comment"># 下次极域启动时会自动打开 CMD 而非正常运行</span></div>
+    </div>
+
+</div>
+
+<footer>
+    <p>CVEET &copy; 2026 &middot; FloatyingCveet &middot; 正测试不代表最终品质</p>
+</footer>
+
+<script>
+(function() {
+    var navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', function() {
+        navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    var navToggle = document.getElementById('navToggle');
+    var navLinksEl = document.getElementById('navLinks');
+    navToggle.addEventListener('click', function() {
+        navLinksEl.classList.toggle('open');
+    });
+    navLinksEl.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() { navLinksEl.classList.remove('open'); });
+    });
+})();
+</script>
+
+</body>
+</html>
