@@ -553,15 +553,31 @@
     </div>
 </section>
 
-<!-- Video Section -->
+<!-- Storeroom -->
 <section id="storeroom">
-    <div class="container">
+    <div class="container" style="text-align:center;">
         <h2 class="section-title reveal">储物 <span class="accent">间</span></h2>
-        <div class="video-wrap reveal">
+        <p style="color:var(--text-muted);margin-bottom:32px;font-size:1.05rem;">工具下载、反极域方法、资源分享都在这里</p>
+        <a href="/stu.html" style="
+            display:inline-flex;align-items:center;gap:10px;
+            padding:16px 40px;border-radius:14px;
+            background:var(--gradient);color:#fff;
+            font-size:1.1rem;font-weight:600;
+            text-decoration:none;
+            transition:transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow:0 8px 32px rgba(167,139,250,0.3);
+        " onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 12px 40px rgba(167,139,250,0.4)'"
+           onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 32px rgba(167,139,250,0.3)'"
+        >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            进入资源站
+        </a>
+        <div class="video-wrap reveal" style="margin-top:48px;">
             <video src="https://vdse.bdstatic.com/192d9a98d782d9c74c96f09db9378d93.mp4" controls preload="metadata"></video>
         </div>
     </div>
 </section>
+
 
 <!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
